@@ -23,14 +23,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void startAddNewTransaction(BuildContext ctx) {
-    showModalBottomSheet(
-      context: ctx,
-      builder: (bCtx) {
-        return NewTransaction(_addNewTransaction);
-      }
-    );
-  }
 
   final List<Transaction> _userTransaction = [
     Transaction(
