@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/user_transaction.dart';
+import 'models/transaction.dart';
+import 'widgets/transaction_list.dart';
+import 'widgets/new_transaction.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +16,49 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  void startAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+      context: ctx,
+      builder: (bCtx) {
+        return NewTransaction(_addNewTransaction);
+      }
+    );
+  }
+
+  final List<Transaction> _userTransaction = [
+    Transaction(
+      id: 't1',
+      title: 'New shoes',
+      amount: 69.99,
+      date: DateTime.now()
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Weekly groceries',
+      amount: 16.53,
+      date: DateTime.now()
+    ),
+  ];
+
+  void _addNewTransaction(String title, double amount) {
+    final newTx = Transaction(
+      id: DateTime.now().toString(),
+      title: title,
+      amount: amount,
+      date: DateTime.now()
+    );
+
+    setState(() {
+       _userTransaction.add(newTx) ;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +85,11 @@ class MyHomePage extends StatelessWidget {
                 color: Colors.blue,
               ),
             ),
-            UserTransactions()
+            Column(
+              children: <Widget>[
+                NewTransaction(_addNewTransaction),
+                TransactionList(_userTransaction)],
+            )
           ],
         ),
       ),
@@ -53,5 +101,4 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
-
 }
