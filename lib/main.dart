@@ -27,7 +27,12 @@ class _MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet(
       context: ctx,
       builder: (bCtx) {
-        return NewTransaction(_addNewTransaction);
+        return GestureDetector(
+          child: NewTransaction(_addNewTransaction),
+          //  actually, without these below code, it is working.
+          onTap: () {},
+          behavior: HitTestBehavior.opaque,
+        );
       }
     );
   }
@@ -56,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     setState(() {
-       _userTransaction.add(newTx) ;
+        _userTransaction.add(newTx) ;
     });
   }
 
@@ -87,7 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Column(
               children: <Widget>[
-                NewTransaction(_addNewTransaction),
                 TransactionList(_userTransaction)],
             )
           ],
