@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 
 import 'models/transaction.dart';
 import 'widgets/transaction_list.dart';
@@ -9,10 +9,10 @@ import 'widgets/chart.dart';
 void main() {
   runApp(MyApp());
 
-  // these code below should be under runApp(MyApp()), otherwise error occurs;
-  SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-  ]);
+  // // these code below should be under runApp(MyApp()), otherwise error occurs;
+  // SystemChrome.setPreferredOrientations([
+  //     DeviceOrientation.portraitUp,
+  // ]);
 }
 
 class MyApp extends StatelessWidget {
@@ -56,6 +56,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  bool _showChart = false;
 
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
@@ -130,25 +132,39 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: appBar,
 
-      body: SingleChildScrollView(
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-              height: (MediaQuery.of(context).size.height
-                - appBar.preferredSize.height
-                - MediaQuery.of(context).padding.top) * 0.3,
-              child: Chart(_recentTransactions)
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height
-                - appBar.preferredSize.height
-                - MediaQuery.of(context).padding.top) * 0.7,
-              child: TransactionList(_userTransaction,_deleteTransaction)
-            )
-          ],
-        ),
+      body: Column(
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('Show Chart'),
+              Switch(
+                value: _showChart,
+                onChanged: (bool value) {
+                  setState(() {
+                      _showChart = value;
+                  });
+                },
+              )
+            ],
+          ),
+
+          _showChart ? Container(
+            height: (MediaQuery.of(context).size.height
+              - appBar.preferredSize.height
+              - MediaQuery.of(context).padding.top) * 0.7,
+            child: Chart(_recentTransactions)
+          ) :
+
+          Container(
+            height: (MediaQuery.of(context).size.height
+              - appBar.preferredSize.height
+              - MediaQuery.of(context).padding.top) * 0.7,
+            child: TransactionList(_userTransaction,_deleteTransaction)
+          )
+        ],
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
