@@ -164,7 +164,10 @@ class _MyHomePageState extends State<MyHomePage> {
             if (_isLandscape) Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text('Show Chart'),
+                Text(
+                  'Show Chart',
+                  style: Theme.of(context).textTheme.headline6
+                ),
 
                 // without adaptive & activeColor setting,
                 // default color was accentColor with low opacity.
