@@ -154,50 +154,51 @@ class _MyHomePageState extends State<MyHomePage> {
       child: TransactionList(_userTransaction,_deleteTransaction)
     );
 
-    final SingleChildScrollView pageBody = SingleChildScrollView(
+    final SafeArea pageBody = SafeArea(
+      child:SingleChildScrollView(
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
 
-      child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
+            if (_isLandscape) Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Show Chart'),
 
-          if (_isLandscape) Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('Show Chart'),
+                // without adaptive & activeColor setting,
+                // default color was accentColor with low opacity.
+                Switch.adaptive(
+                  activeColor: Theme.of(context).accentColor,
+                  value: _showChart,
+                  onChanged: (bool value) {
+                    setState(() {
+                        _showChart = value;
+                    });
+                  },
+                )
+              ],
+            ),
 
-              // without adaptive & activeColor setting,
-              // default color was accentColor with low opacity.
-              Switch.adaptive(
-                activeColor: Theme.of(context).accentColor,
-                value: _showChart,
-                onChanged: (bool value) {
-                  setState(() {
-                      _showChart = value;
-                  });
-                },
-              )
-            ],
-          ),
+            if (!_isLandscape)
+            Container(
+              height: (mediaQuery.size.height
+                - appBar.preferredSize.height
+                - mediaQuery.padding.top) * 0.3,
+              child: Chart(_recentTransactions)
+            ),
+            if (!_isLandscape) txListWidget,
 
-          if (!_isLandscape)
-          Container(
-            height: (mediaQuery.size.height
-              - appBar.preferredSize.height
-              - mediaQuery.padding.top) * 0.3,
-            child: Chart(_recentTransactions)
-          ),
-          if (!_isLandscape) txListWidget,
+            if (_isLandscape)
+            _showChart ? Container(
+              height: (mediaQuery.size.height
+                - appBar.preferredSize.height
+                - mediaQuery.padding.top) * 0.7,
+              child: Chart(_recentTransactions)
+            ) : txListWidget,
 
-          if (_isLandscape)
-          _showChart ? Container(
-            height: (mediaQuery.size.height
-              - appBar.preferredSize.height
-              - mediaQuery.padding.top) * 0.7,
-            child: Chart(_recentTransactions)
-          ) : txListWidget,
-
-        ],
+          ],
+        ),
       ),
     );
 
