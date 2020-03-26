@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'models/transaction.dart';
 import 'widgets/transaction_list.dart';
 import 'widgets/new_transaction.dart';
 import 'widgets/chart.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+
+  // these code below should be under runApp(MyApp()), otherwise error occurs;
+  SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+  ]);
+}
 
 class MyApp extends StatelessWidget {
   @override
