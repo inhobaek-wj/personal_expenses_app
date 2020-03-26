@@ -48,6 +48,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
@@ -108,24 +109,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var appBar = AppBar(
+      title: Text('Flutter App'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startAddNewTransaction(context),
+        )
+      ],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Flutter App'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _startAddNewTransaction(context),
-          )
-        ],
-      ),
+      appBar: appBar,
 
       body: SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Chart(_recentTransactions),
-            TransactionList(_userTransaction,_deleteTransaction)],
+            Container(
+              height: (MediaQuery.of(context).size.height
+                - appBar.preferredSize.height
+                - MediaQuery.of(context).padding.top) * 0.4,
+              child: Chart(_recentTransactions)
+            ),
+            Container(
+              height: (MediaQuery.of(context).size.height
+                - appBar.preferredSize.height
+                - MediaQuery.of(context).padding.top) * 0.6,
+              child: TransactionList(_userTransaction,_deleteTransaction)
+            )
+          ],
         ),
       ),
 
