@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
+    final AppBar appBar = AppBar(
       title: Text('Flutter App'),
       actions: <Widget>[
         IconButton(
@@ -127,6 +127,13 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () => _startAddNewTransaction(context),
         )
       ],
+    );
+    final bool _isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final Container txListWidget = Container(
+      height: (MediaQuery.of(context).size.height
+        - appBar.preferredSize.height
+        - MediaQuery.of(context).padding.top) * 0.7,
+      child: TransactionList(_userTransaction,_deleteTransaction)
     );
 
     return Scaffold(
@@ -136,7 +143,8 @@ class _MyHomePageState extends State<MyHomePage> {
         // mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Row(
+
+          if (_isLandscape) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text('Show Chart'),
@@ -151,19 +159,24 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
 
+          if (!_isLandscape)
+          Container(
+            height: (MediaQuery.of(context).size.height
+              - appBar.preferredSize.height
+              - MediaQuery.of(context).padding.top) * 0.3,
+            child: Chart(_recentTransactions)
+          ),
+          if (!_isLandscape) txListWidget,
+
+          if (_isLandscape)
           _showChart ? Container(
             height: (MediaQuery.of(context).size.height
               - appBar.preferredSize.height
               - MediaQuery.of(context).padding.top) * 0.7,
             child: Chart(_recentTransactions)
-          ) :
+          ) : txListWidget,
 
-          Container(
-            height: (MediaQuery.of(context).size.height
-              - appBar.preferredSize.height
-              - MediaQuery.of(context).padding.top) * 0.7,
-            child: TransactionList(_userTransaction,_deleteTransaction)
-          )
+
         ],
       ),
 
